@@ -1,5 +1,5 @@
 ;(function () {
-  const baseSize = 100 // 基础字号
+  const baseSize = 14 // 基础字号，修改后记得同步修改 postcss.config.js
   const setRem = () => {
     const scale = document.documentElement.clientWidth / 1920 // 假设设计稿宽度为 1920px
     document.documentElement.style.fontSize =
