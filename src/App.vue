@@ -12,11 +12,9 @@
     <RouterView />
   </div>
 </template>
-<script setup>
-import { RouterLink, RouterView } from 'vue-router'
-</script>
+<script setup></script>
 
-<style scoped>
+<style lang="scss" scoped>
 .wrap {
   padding: 0 20px;
   header {
