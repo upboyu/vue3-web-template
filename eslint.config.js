@@ -19,4 +19,11 @@ export default [
   skipFormatting,
 
   autoImportConfig,
+
+  {
+    files: ['**/src/components/**/index.vue'],
+    rules: {
+      'vue/multi-word-component-names': 'off',
+    },
+  },
 ]
