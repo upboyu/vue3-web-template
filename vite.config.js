@@ -10,6 +10,23 @@ import { ElementPlusResolver } from 'unplugin-vue-components/resolvers'
 
 // https://vite.dev/config/
 export default defineConfig({
+  // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
+  // 如需部署到某域名的子地址，请设置这里。例如：'/refficiencyh5'。此时所有资源的路径都将据此配置重写
+  base: command === 'build' ? '/' : '/',
+  build: {
+    target: 'es2015',
+  },
+  server: {
+    port: 80,
+    host: true,
+    proxy: {
+      '/dev-api': {
+        target: 'http://www.xxx.com:8080',
+        changeOrigin: true,
+        rewrite: p => p.replace(/^\/dev-api/, ''),
+      },
+    },
+  },
   plugins: [
     vue(),
     vueJsx(),
@@ -31,7 +48,7 @@ export default defineConfig({
   css: {
     preprocessorOptions: {
       scss: {
-        api: 'modern', // 修复警告
+        api: 'modern',
       },
     },
   },
