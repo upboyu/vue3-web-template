@@ -1,8 +1,6 @@
 import './assets/main.css'
 import 'normalize.css'
 
-import './utils/setRem.js'
-
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
 
