@@ -8,7 +8,6 @@
 
 <script setup name="CustomElTableColumn">
 import { ElTableColumn } from 'element-plus'
-import { watch } from 'vue'
 
 const attrs = useAttrs()
 const props = defineProps({
@@ -17,27 +16,22 @@ const props = defineProps({
     default: undefined,
   },
 })
-const columnsVisible = inject('columnsVisible')
-const route = useRoute()
+const defaultColumns = inject('defaultColumns')
+const columnsStorage = useStorage('columnsStorage:' + useRoute().path, [])
 
-// 控制列的显示隐藏
-const visibleStorage = useStorage('visibleStorage:' + route.path, {})
-const key = Symbol('columnKey')
+// 控制本列的显示隐藏
 const show = computed(() =>
   props.visible === undefined
     ? true
-    : columnsVisible.find(item => item.key === key)?.visible,
+    : columnsStorage.value.find(item => item.key === attrs.label)?.visible,
 )
-props.visible !== undefined &&
-  columnsVisible.push({
-    key: key,
-    label: attrs.label,
-    visible: visibleStorage.value[attrs.label] ?? props.visible, // 初始值
-  })
 
-// 本地存储
-watch(show, n => {
-  visibleStorage.value[attrs.label] = n
+// 设置默认值
+defaultColumns.push({
+  key: attrs.label,
+  label: attrs.label,
+  visible: props.visible === undefined ? true : props.visible,
+  disabled: props.visible === undefined,
 })
 </script>
 
