@@ -46,21 +46,24 @@ function handleCheckboxChange() {
 
 // 将外部数据同步到本地
 watch(columnsState, n => {
+  columnsStateToStorage()
+})
+function columnsStateToStorage() {
   // 兼容 string
-  if (typeof n === 'string') {
+  if (typeof columnsState.value === 'string') {
     try {
-      n = JSON.parse(n)
+      columnsState.value = JSON.parse(columnsState.value)
     } catch (error) {
-      n = []
+      columnsState.value = []
     }
   }
 
-  if (!Array.isArray(n)) return // 处理错误格式
-  n.forEach(({ label, visible }) => {
+  if (!Array.isArray(columnsState.value)) return // 处理错误格式
+  columnsState.value.forEach(({ label, visible }) => {
     const column = columnsStorage.value.find(item => item.label === label)
     !column.disabled && (column.visible = visible)
   })
-})
+}
 
 // defaultColumns 初始化完成后，合并到 columnsStorage
 nextTick(() => {
@@ -70,6 +73,8 @@ nextTick(() => {
     target.visible = column.visible
   })
   columnsStorage.value = resultColumns
+
+  columnsStateToStorage() // 兼容 columnsState 为直接赋值的非响应式对象的时候
 })
 </script>
 
