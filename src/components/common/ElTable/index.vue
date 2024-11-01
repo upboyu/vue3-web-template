@@ -21,10 +21,10 @@ import { ElTable } from 'element-plus'
 const columnsStorage = useStorage('columnsStorage:' + useRoute().path, [])
 const props = defineProps({
   columnsState: {
-    type: Array,
-    default: [],
+    type: [Array, String],
   },
 })
+
 const { columnsState } = toRefs(props)
 const emit = defineEmits(['columnsStateChange'])
 
@@ -54,7 +54,7 @@ function columnsStateToStorage() {
     try {
       columnsState.value = JSON.parse(columnsState.value)
     } catch (error) {
-      columnsState.value = []
+      console.error(error)
     }
   }
 
