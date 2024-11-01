@@ -25,10 +25,9 @@
 <script setup>
 import { Operation } from '@element-plus/icons-vue'
 const emit = defineEmits(['checkboxChange'])
-const columnsStorage = useStorage('columnsStorage:' + useRoute().path, [])
-const show = computed(() =>
-  columnsStorage.value.find(item => item.disabled === false),
-)
+const columnsStorage = useStorage(`columnsStorage:${useRoute().path}-${inject('name')}`, [])
+
+const show = computed(() => columnsStorage.value.find(item => item.disabled === false))
 
 // 勾选
 function checkboxChange(event, label) {

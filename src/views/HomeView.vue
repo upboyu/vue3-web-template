@@ -4,7 +4,13 @@
     style="width: 100%"
     :columns-state="columnsState"
     @columns-state-change="columnsStateChange"
+    name="foo"
   >
+    <el-table-column prop="date" label="Date" width="180" visible />
+    <el-table-column prop="name" label="Name" width="180" :visible="false" />
+    <el-table-column prop="address" label="Address" />
+  </el-table>
+  <el-table :data="tableData" style="width: 100%" name="bar">
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />

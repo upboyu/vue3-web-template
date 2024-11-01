@@ -1,7 +1,7 @@
 <template>
   <el-table-column v-bind="$attrs" v-if="show">
-    <template v-for="(_, name) in $slots" #[name]="slotprops">
-      <slot :name="name" v-bind="slotprops" />
+    <template v-for="(_, name) in $slots" #[name]="slotProps">
+      <slot :name="name" v-bind="slotProps" />
     </template>
   </el-table-column>
 </template>
@@ -17,7 +17,7 @@ const props = defineProps({
   },
 })
 const defaultColumns = inject('defaultColumns')
-const columnsStorage = useStorage('columnsStorage:' + useRoute().path, [])
+const columnsStorage = useStorage(`columnsStorage:${useRoute().path}-${inject('name')}`, [])
 
 // 控制本列的显示隐藏
 const show = computed(() =>
