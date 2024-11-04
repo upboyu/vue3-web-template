@@ -26,7 +26,7 @@ const props = defineProps({
 const { columnsState } = toRefs(props)
 const emit = defineEmits(['columnsStateChange'])
 
-const columnsStorage = useStorage(`columnsStorage:${useRoute().path}-${props.name}`, [])
+const columnsStorage = useStorage(`columnsStorage:${location.href}-${props.name}`, [])
 
 const tableRef = ref()
 const defaultColumns = reactive([]) // 默认设置

@@ -17,7 +17,7 @@ const props = defineProps({
   },
 })
 const defaultColumns = inject('defaultColumns')
-const columnsStorage = useStorage(`columnsStorage:${useRoute().path}-${inject('name')}`, [])
+const columnsStorage = useStorage(`columnsStorage:${location.href}-${inject('name')}`, [])
 
 // 控制本列的显示隐藏
 const show = computed(() =>

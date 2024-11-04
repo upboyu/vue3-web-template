@@ -1,8 +1,8 @@
 <template>
-  <div class="top-right-btn">
+  <div class="table-top-right-btn">
     <el-tooltip effect="dark" content="显隐列" placement="top" v-if="show">
-      <el-dropdown trigger="click" :hide-on-click="false">
-        <el-button circle :icon="Operation" />
+      <el-dropdown trigger="click" :hide-on-click="false" size="small">
+        <el-button circle :icon="Operation" size="small" />
         <template #dropdown>
           <el-dropdown-menu>
             <template v-for="item in columnsStorage" :key="item.key">
@@ -12,6 +12,7 @@
                   @change="checkboxChange($event, item.label)"
                   :label="item.label"
                   :disabled="item.disabled"
+                  size="small"
                 />
               </el-dropdown-item>
             </template>
@@ -25,7 +26,7 @@
 <script setup>
 import { Operation } from '@element-plus/icons-vue'
 const emit = defineEmits(['checkboxChange'])
-const columnsStorage = useStorage(`columnsStorage:${useRoute().path}-${inject('name')}`, [])
+const columnsStorage = useStorage(`columnsStorage:${location.href}-${inject('name')}`, [])
 
 const show = computed(() => columnsStorage.value.find(item => item.disabled === false))
 
@@ -37,7 +38,7 @@ function checkboxChange(event, label) {
 </script>
 
 <style lang="scss" scoped>
-.top-right-btn {
+.table-top-right-btn {
   position: absolute;
   top: -33px;
   right: 0;
