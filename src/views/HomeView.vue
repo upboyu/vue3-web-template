@@ -4,13 +4,13 @@
     style="width: 100%"
     :columns-state="columnsState"
     @columns-state-change="columnsStateChange"
-    name="foo"
+    columns-storage-key="foo"
   >
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
   </el-table>
-  <el-table :data="tableData" style="width: 100%" name="bar">
+  <el-table :data="tableData" style="width: 100%" columns-storage-key="bar">
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
@@ -50,10 +50,10 @@ function columnsStateChange(params) {
 
 // 模拟获取服务器存储数据
 setTimeout(() => {
-  columnsState.value = [
+  columnsState.value = JSON.stringify([
     { key: 'Date', label: 'Date', visible: false, disabled: false },
     { key: 'Name', label: 'Name', visible: false, disabled: false },
     { key: 'Address', label: 'Address', visible: true, disabled: true },
-  ]
+  ])
 }, 1000)
 </script>

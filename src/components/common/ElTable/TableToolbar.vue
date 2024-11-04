@@ -5,7 +5,7 @@
         <el-button circle :icon="Operation" size="small" />
         <template #dropdown>
           <el-dropdown-menu>
-            <template v-for="item in columnsStorage" :key="item.key">
+            <template v-for="item in columns" :key="item.key">
               <el-dropdown-item>
                 <el-checkbox
                   v-model="item.visible"
@@ -26,13 +26,13 @@
 <script setup>
 import { Operation } from '@element-plus/icons-vue'
 const emit = defineEmits(['checkboxChange'])
-const columnsStorage = useStorage(`columnsStorage:${location.href}-${inject('name')}`, [])
+const columns = inject('columns')
 
-const show = computed(() => columnsStorage.value.find(item => item.disabled === false))
+const show = computed(() => columns.value.find(item => item.disabled === false))
 
 // 勾选
 function checkboxChange(event, label) {
-  columnsStorage.value.find(item => item.label == label).visible = event
+  columns.value.find(item => item.label == label).visible = event
   emit('checkboxChange')
 }
 </script>

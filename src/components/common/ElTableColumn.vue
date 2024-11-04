@@ -17,13 +17,13 @@ const props = defineProps({
   },
 })
 const defaultColumns = inject('defaultColumns')
-const columnsStorage = useStorage(`columnsStorage:${location.href}-${inject('name')}`, [])
+const columns = inject('columns')
 
 // 控制本列的显示隐藏
 const show = computed(() =>
   props.visible === undefined
     ? true
-    : columnsStorage.value.find(item => item.key === attrs.label)?.visible,
+    : columns.value.find(item => item.key === attrs.label)?.visible,
 )
 
 // 设置默认值
