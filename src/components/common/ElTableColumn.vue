@@ -23,12 +23,11 @@ const columns = inject('columns')
 const show = computed(() =>
   props.visible === undefined
     ? true
-    : columns.value.find(item => item.key === attrs.label)?.visible,
+    : columns.value.find(item => item.label === attrs.label)?.visible,
 )
 
 // 设置默认值
 defaultColumns.push({
-  key: attrs.label,
   label: attrs.label,
   visible: props.visible === undefined ? true : props.visible,
   disabled: props.visible === undefined,

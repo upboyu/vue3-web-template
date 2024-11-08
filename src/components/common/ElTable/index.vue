@@ -75,5 +75,6 @@ function syncColumnsState() {
 <style lang="scss" scoped>
 .custom-el-table-wrap {
   position: relative;
+  clear: both;
 }
 </style>

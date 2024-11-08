@@ -5,7 +5,7 @@
         <el-button circle :icon="Operation" size="small" />
         <template #dropdown>
           <el-dropdown-menu>
-            <template v-for="item in columns" :key="item.key">
+            <template v-for="item in columns" :key="item.label">
               <el-dropdown-item>
                 <el-checkbox
                   v-model="item.visible"
