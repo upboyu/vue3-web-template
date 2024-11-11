@@ -23,17 +23,18 @@ const columns = inject('columns')
 
 // 控制本列的显示隐藏
 const show = computed(() =>
-  props.visible === undefined
+  props.visible === undefined || attrs.type === 'selection'
     ? true
     : columns.value.find((item) => item.label === attrs.label)?.visible,
 )
 
 // 设置默认值
-defaultColumns.push({
-  label: attrs.label,
-  visible: props.visible === undefined ? true : props.visible,
-  disabled: props.visible === undefined,
-})
+attrs.type !== 'selection' &&
+  defaultColumns.push({
+    label: attrs.label,
+    visible: props.visible === undefined ? true : props.visible,
+    disabled: props.visible === undefined,
+  })
 </script>
 
 <style lang="scss" scoped></style>
