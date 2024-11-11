@@ -17,22 +17,29 @@
 </template>
 
 <script setup name="CustomElTable">
+import { ref, reactive, computed, provide, nextTick, watch } from 'vue'
+import { useStorage } from '@vueuse/core'
+
 import { ElTable } from 'element-plus'
 import TableToolbar from './TableToolbar.vue'
 
 const props = defineProps({
-  columnsState: [Array, String],
-  columnsStorageKey: String,
+  columnsStorageConfig: {
+    type: Object,
+    default: () => ({}),
+  },
 })
-const { columnsState } = toRefs(props)
-const emit = defineEmits(['columnsStateChange'])
+
+const columnsState = computed(() => props.columnsStorageConfig?.columnsState)
+const columnsStorageKey = computed(() => props.columnsStorageConfig?.columnsStorageKey)
+const onColumnsStateChange = computed(() => props.columnsStorageConfig?.onColumnsStateChange)
 
 const tableRef = ref()
 const defaultColumns = reactive([]) // 初始列状态
 const columns = // 本地列状态
-  props.columnsStorageKey === undefined
+  columnsStorageKey.value === undefined
     ? ref([])
-    : useStorage(`columnsStorage:${location.href}-${props.columnsStorageKey}`, [])
+    : useStorage(`columnsStorage:${location.href}-${columnsStorageKey.value}`, [])
 
 provide('defaultColumns', defaultColumns)
 provide('columns', columns)
@@ -41,13 +48,13 @@ provide('columns', columns)
 watch(columns, () => nextTick(() => tableRef.value.doLayout()), { deep: true })
 
 // 复选框变化时，将 columns 同步到外部
-const handleCheckboxChange = () => emit('columnsStateChange', columns.value)
+const handleCheckboxChange = () => onColumnsStateChange.value?.(columns.value)
 
 // 初始化完成后 将外部列状态和初始列状态合并到 columns
 nextTick(() => {
-  columns.value = defaultColumns.map(col => ({
+  columns.value = defaultColumns.map((col) => ({
     ...col,
-    visible: columns.value.find(item => item.label === col.label)?.visible ?? col.visible,
+    visible: columns.value.find((item) => item.label === col.label)?.visible ?? col.visible,
   }))
 
   syncColumnsState()
@@ -66,7 +73,7 @@ function syncColumnsState() {
   }
   if (!Array.isArray(_columnsState)) return // 处理错误格式
   _columnsState.forEach(({ label, visible }) => {
-    const column = columns.value.find(item => item.label === label)
+    const column = columns.value.find((item) => item.label === label)
     column && !column.disabled && (column.visible = visible)
   })
 }

@@ -7,6 +7,8 @@
 </template>
 
 <script setup name="CustomElTableColumn">
+import { inject, computed, useAttrs } from 'vue'
+
 import { ElTableColumn } from 'element-plus'
 
 const attrs = useAttrs()
@@ -23,7 +25,7 @@ const columns = inject('columns')
 const show = computed(() =>
   props.visible === undefined
     ? true
-    : columns.value.find(item => item.label === attrs.label)?.visible,
+    : columns.value.find((item) => item.label === attrs.label)?.visible,
 )
 
 // 设置默认值

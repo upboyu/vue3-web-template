@@ -2,15 +2,17 @@
   <el-table
     :data="tableData"
     style="width: 100%"
-    :columns-state="columnsState"
-    @columns-state-change="columnsStateChange"
-    columns-storage-key="foo"
+    :columnsStorageConfig="{
+      columnsState: columnsState,
+      onColumnsStateChange: onColumnsStateChange,
+      columnsStorageKey: 'foo',
+    }"
   >
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
   </el-table>
-  <el-table :data="tableData" style="width: 100%" columns-storage-key="bar">
+  <el-table :data="tableData" style="width: 100%">
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
@@ -44,7 +46,7 @@ const tableData = [
 const columnsState = ref([])
 
 // 捕获状态改变
-function columnsStateChange(params) {
+function onColumnsStateChange(params) {
   console.log(params)
 }
 

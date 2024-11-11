@@ -24,15 +24,26 @@
 </template>
 
 <script setup>
+import { inject, computed } from 'vue'
+import {
+  ElTooltip,
+  ElDropdown,
+  ElButton,
+  ElDropdownMenu,
+  ElDropdownItem,
+  ElCheckbox,
+} from 'element-plus'
+
 import { Operation } from '@element-plus/icons-vue'
+
 const emit = defineEmits(['checkboxChange'])
 const columns = inject('columns')
 
-const show = computed(() => columns.value.find(item => item.disabled === false))
+const show = computed(() => columns.value.find((item) => item.disabled === false))
 
 // 勾选
 function checkboxChange(event, label) {
-  columns.value.find(item => item.label == label).visible = event
+  columns.value.find((item) => item.label == label).visible = event
   emit('checkboxChange')
 }
 </script>
