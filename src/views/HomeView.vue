@@ -12,7 +12,13 @@
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
   </el-table>
-  <el-table :data="tableData" style="width: 100%">
+  <el-table
+    :data="tableData"
+    style="width: 100%"
+    :columnsStorageConfig="{
+      columnsStorageKey: 'bar',
+    }"
+  >
     <el-table-column prop="date" label="Date" width="180" visible />
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
@@ -52,10 +58,10 @@ function onColumnsStateChange(params) {
 
 // 模拟获取服务器存储数据
 setTimeout(() => {
-  columnsState.value = JSON.stringify([
-    { key: 'Date', label: 'Date', visible: false, disabled: false },
-    { key: 'Name', label: 'Name', visible: false, disabled: false },
-    { key: 'Address', label: 'Address', visible: true, disabled: true },
-  ])
+  columnsState.value = JSON.stringify({
+    Date: false,
+    Name: false,
+    Address: false,
+  })
 }, 1000)
 </script>

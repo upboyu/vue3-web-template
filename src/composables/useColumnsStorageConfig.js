@@ -3,19 +3,25 @@ import { ref } from 'vue'
 
 import { getColumns, setColumns } from '@/api/tableConfig'
 
-export function useColumnsStorageConfig(key = 'default') {
+export function useColumnsStorageConfig(key = 'default', dirty = false) {
   const url = `${location.href.split('?')[0]}-${key}`
 
-  const columnsState = ref([])
   // 从服务器获取列信息
-  getColumns().then((res) => {
-    columnsState.value = res.find((item) => item.url === url)?.config
+  const columnsState = ref({})
+  getColumns({ url }).then((res) => {
+    try {
+      columnsState.value = JSON.parse(res?.config)
+    } catch (error) {
+      console.error(error)
+    }
   })
 
   // 上传本地列信息到服务器
   function onColumnsStateChange(columns) {
     const data = {
-      config: JSON.stringify(columns),
+      config: dirty
+        ? JSON.stringify({ ...columnsState.value, ...columns })
+        : JSON.stringify(columns),
       url,
     }
     setColumns(data).then(() => {})

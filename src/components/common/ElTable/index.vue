@@ -17,7 +17,7 @@
 </template>
 
 <script setup name="CustomElTable">
-import { ref, reactive, computed, provide, nextTick, watch } from 'vue'
+import { ref, reactive, computed, provide, nextTick, watch, unref } from 'vue'
 import { useStorage } from '@vueuse/core'
 
 import { ElTable } from 'element-plus'
@@ -30,7 +30,7 @@ const props = defineProps({
   },
 })
 
-const columnsState = computed(() => props.columnsStorageConfig?.columnsState)
+const columnsState = computed(() => unref(props.columnsStorageConfig?.columnsState))
 const columnsStorageKey = computed(() => props.columnsStorageConfig?.columnsStorageKey)
 const onColumnsStateChange = computed(() => props.columnsStorageConfig?.onColumnsStateChange)
 
@@ -48,7 +48,11 @@ provide('columns', columns)
 watch(columns, () => nextTick(() => tableRef.value.doLayout()), { deep: true })
 
 // 复选框变化时，将 columns 同步到外部
-const handleCheckboxChange = () => onColumnsStateChange.value?.(columns.value)
+const handleCheckboxChange = () => {
+  if (!onColumnsStateChange.value) return
+  const res = columns.value.reduce((acc, { label, visible }) => ({ ...acc, [label]: visible }), {})
+  onColumnsStateChange.value(res)
+}
 
 // 初始化完成后 将外部列状态和初始列状态合并到 columns
 nextTick(() => {
@@ -64,15 +68,21 @@ nextTick(() => {
 watch(columnsState, syncColumnsState, { deep: true })
 
 function syncColumnsState() {
+  // 兼容 string
   let _columnsState
   try {
     _columnsState =
-      typeof columnsState.value === 'string' ? JSON.parse(columnsState.value) : columnsState.value // 兼容 string
+      typeof columnsState.value === 'string' ? JSON.parse(columnsState.value) : columnsState.value
   } catch (error) {
     console.error(error)
   }
-  if (!Array.isArray(_columnsState)) return // 处理错误格式
-  _columnsState.forEach(({ label, visible }) => {
+  // 处理错误格式
+  if (!isPlainObject(_columnsState)) return
+  function isPlainObject(obj) {
+    return Object.prototype.toString.call(obj) === '[object Object]'
+  }
+  // 同步到本地
+  Object.entries(_columnsState).forEach(([label, visible]) => {
     const column = columns.value.find((item) => item.label === label)
     column && !column.disabled && (column.visible = visible)
   })
