@@ -10,7 +10,7 @@ export function useColumnsStorageConfig(key = 'default', merge = false) {
   const columnsState = ref({})
   getColumns({ url }).then((res) => {
     try {
-      columnsState.value = JSON.parse(res?.config)
+      columnsState.value = JSON.parse(res?.config || '{}')
     } catch (error) {
       console.error(error)
     }
