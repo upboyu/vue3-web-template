@@ -17,7 +17,7 @@
 </template>
 
 <script setup name="CustomElTable">
-import { ref, reactive, computed, provide, nextTick, watch, unref } from 'vue'
+import { ref, reactive, computed, provide, nextTick, watch, unref, defineExpose } from 'vue'
 import { useStorage } from '@vueuse/core'
 
 import { ElTable } from 'element-plus'
@@ -87,6 +87,11 @@ function syncColumnsState() {
     column && !column.disabled && (column.visible = visible)
   })
 }
+
+// 继承 Exposes
+const exposes = {}
+defineExpose(exposes)
+nextTick(() => Object.assign(exposes, tableRef.value))
 </script>
 
 <style lang="scss" scoped>
