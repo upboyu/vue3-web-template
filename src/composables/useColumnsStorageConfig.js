@@ -1,9 +1,10 @@
 // 快速生成与服务器存储相关的三个配置项
 import { ref } from 'vue'
-
 import { getColumns, setColumns } from '@/api/tableConfig'
+import { useStorage } from '@vueuse/core'
 
 export function useColumnsStorageConfig(key = 'default', merge = false) {
+  key = `${key}-${useStorage('user', {}).value.userId}` // 跟账号绑定，防止串号
   const url = `${location.href.split('?')[0]}-${key}`
 
   // 从服务器获取列信息
