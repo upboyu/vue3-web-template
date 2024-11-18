@@ -1,7 +1,7 @@
 <template>
   <div class="table-top-right-btn">
-    <el-tooltip effect="dark" content="显隐列" placement="top" v-if="show">
-      <el-dropdown trigger="click" :hide-on-click="false" size="small">
+    <el-tooltip effect="dark" content="自定义列" placement="top" v-if="show">
+      <el-dropdown ref="dropdownRef" trigger="click" :hide-on-click="false" size="small">
         <el-button circle :icon="Operation" size="small" />
         <template #dropdown>
           <el-dropdown-menu>
@@ -24,7 +24,7 @@
 </template>
 
 <script setup>
-import { inject, computed } from 'vue'
+import { inject, computed, ref } from 'vue'
 import {
   ElTooltip,
   ElDropdown,
@@ -33,19 +33,23 @@ import {
   ElDropdownItem,
   ElCheckbox,
 } from 'element-plus'
+import { useEventListener } from '@vueuse/core'
 
 import { Operation } from '@element-plus/icons-vue'
 
 const emit = defineEmits(['checkboxChange'])
 const columns = inject('columns')
-
 const show = computed(() => columns.value.find((item) => item.disabled === false))
 
-// 勾选
 function checkboxChange(event, label) {
   columns.value.find((item) => item.label == label).visible = event
   emit('checkboxChange')
 }
+
+const dropdownRef = ref()
+useEventListener('resize', () => {
+  dropdownRef.value?.handleClose?.()
+})
 </script>
 
 <style lang="scss" scoped>
