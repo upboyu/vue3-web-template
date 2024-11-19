@@ -91,7 +91,31 @@ function syncColumnsState() {
 // 继承 Exposes
 const exposes = {}
 defineExpose(exposes)
-nextTick(() => Object.assign(exposes, tableRef.value))
+
+nextTick(() => {
+  // Object.assign(exposes, tableRef.value)
+  // Object.entries(tableRef.value).forEach(([key, value]) => (exposes[key] = value))
+  // console.log(tableRef.value)
+
+  const EXPOSES = [
+    'clearSelection',
+    'getSelectionRows',
+    'toggleRowSelection',
+    'toggleAllSelection',
+    'toggleRowExpansion',
+    'setCurrentRow',
+    'clearSort',
+    'clearFilter',
+    'doLayout',
+    'sort',
+    'scrollTo',
+    'setScrollTop',
+    'setScrollLeft',
+    'columns',
+    'updateKeyChildren',
+  ]
+  EXPOSES.forEach((item) => (exposes[item] = tableRef.value[item]))
+})
 </script>
 
 <style lang="scss" scoped>

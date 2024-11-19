@@ -1,5 +1,6 @@
 <template>
   <el-table
+    ref="tableRef"
     :data="tableData"
     style="width: 100%"
     :columnsStorageConfig="{
@@ -26,6 +27,8 @@
 </template>
 
 <script setup>
+import { nextTick } from 'vue'
+
 const tableData = [
   {
     date: '2016-05-03',
@@ -64,4 +67,9 @@ setTimeout(() => {
     Address: false,
   })
 }, 1000)
+
+const tableRef = ref()
+nextTick(() => {
+  console.log(111, tableRef.value)
+})
 </script>
