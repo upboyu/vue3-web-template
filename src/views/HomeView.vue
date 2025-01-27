@@ -24,6 +24,8 @@
     <el-table-column prop="name" label="Name" width="180" :visible="false" />
     <el-table-column prop="address" label="Address" />
   </el-table>
+
+  <el-button size="mini" @click="handleClick()">el button</el-button>
 </template>
 
 <script setup>
@@ -72,4 +74,10 @@ const tableRef = ref()
 nextTick(() => {
   console.log(111, tableRef.value)
 })
+
+// button
+import { badRequest } from '@/api/example'
+function handleClick() {
+  badRequest()
+}
 </script>

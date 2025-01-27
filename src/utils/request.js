@@ -82,7 +82,7 @@ function handleError(result) {
 
   // web
   showErrorMessage &&
-    proxy.$message.error(
+    ElMessage.error(
       `${
         typeof showErrorMessage === 'object'
           ? showErrorMessage.title + ': '
