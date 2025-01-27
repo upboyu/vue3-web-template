@@ -11,11 +11,11 @@ import ElementPlus from 'unplugin-element-plus/vite'
 import postcsspxtoviewport8plugin from 'postcss-px-to-viewport-8-plugin'
 
 // https://vite.dev/config/
-export default defineConfig(({ command }) => {
+export default defineConfig(({ command, mode }) => {
   return {
     // 默认情况下，vite 会假设你的应用是被部署在一个域名的根路径上
-    // 如需部署到某域名的子地址，请设置这里。例如：'/refficiencyh5'。此时所有资源的路径都将据此配置重写
-    base: command === 'build' ? '/' : '/',
+    // 如需部署到某域名的子地址，请修改 base。例如：'/refficiencyh5'。此时所有资源的路径都将据此配置重写
+    base: command === 'build' && mode !== 'development' ? '/' /* 域名的子地址 */ : '/',
     build: {
       target: 'es2015',
     },
@@ -24,9 +24,9 @@ export default defineConfig(({ command }) => {
       host: true,
       proxy: {
         '/dev-api': {
-          target: 'http://www.xxx.com:8080',
+          target: 'http://run.mocky.io', // 后端地址
           changeOrigin: true,
-          rewrite: p => p.replace(/^\/dev-api/, ''),
+          rewrite: (p) => p.replace(/^\/dev-api/, ''),
         },
       },
     },

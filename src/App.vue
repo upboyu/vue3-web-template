@@ -12,7 +12,9 @@
     <RouterView />
   </div>
 </template>
-<script setup></script>
+<script setup>
+storageToken()
+</script>
 
 <style lang="scss" scoped>
 .wrap {
