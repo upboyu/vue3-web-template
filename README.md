@@ -1,4 +1,4 @@
-# newtest1
+# vue3-web-template
 
 This template should help get you started developing with Vue 3 in Vite.
 
